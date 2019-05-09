@@ -2,17 +2,26 @@
 
     <div class="field" >
         
-        <div class="  p-3 mb-5  has-background-warning	" >
+        <div class="  p-3 mb-5  has-background-warning	box" >
              <div class=" has-text-warning" v-show="noteform">
               
                  <input type="text" ref="NoteTitle" class="input is-warning " placeholder="Title"> <br>
+
             </div>  
-        
+        <br>
             <div class=" has-text-warning">
                 
                 <textarea ref="NoteBody" class="textarea is-warning"  rows="1" @click="createnote"  @keydown="ExpandTextArea()" placeholder="Take a note"></textarea>
                 <!-- <input type="text" class="form-control" placeholder="title" > -->
             </div>
+            <div class="image-upload" v-show="noteform">
+                <label for="file-input">
+                    <i class="fas fa-camera fa-2x"></i>
+                </label>
+
+                <input id="file-input" type="file"/>
+            </div>
+<br>
            <button class="btn btn-warning" v-show="noteform" @click="storenote()">Close</button>
                  
         </div> <br>
@@ -62,14 +71,23 @@ export default {
             })
         },
         storenote(){
-            axios.post('/storenote',{
-                title: this.$refs.NoteTitle.value,
-                note: this.$refs.NoteBody.value,
-            }).then(
-                this.$refs.NoteTitle.value='',
-                this.$refs.NoteBody.value='',
-                this.shownote(),
-            )
+            if( this.$refs.NoteTitle.value== '' &  this.$refs.NoteBody.value == '')
+            {
+                  this.noteform=false;
+                this.shownote();
+            }
+            else{
+                axios.post('/storenote',{
+                    title: this.$refs.NoteTitle.value,
+                    note: this.$refs.NoteBody.value,
+                }).then(
+                    this.$refs.NoteTitle.value='',
+                    this.$refs.NoteBody.value='',
+                    this.noteform=false,
+                    this.shownote(),
+                )
+            }
+            
             
         }
     },

@@ -1833,6 +1833,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1860,10 +1869,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     storenote: function storenote() {
-      axios.post('/storenote', {
-        title: this.$refs.NoteTitle.value,
-        note: this.$refs.NoteBody.value
-      }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.shownote());
+      if (this.$refs.NoteTitle.value == '' & this.$refs.NoteBody.value == '') {
+        this.noteform = false;
+        this.shownote();
+      } else {
+        axios.post('/storenote', {
+          title: this.$refs.NoteTitle.value,
+          note: this.$refs.NoteBody.value
+        }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.noteform = false, this.shownote());
+      }
     }
   },
   mounted: function mounted() {
@@ -37220,7 +37234,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "field" }, [
-    _c("div", { staticClass: "  p-3 mb-5  has-background-warning\t" }, [
+    _c("div", { staticClass: "  p-3 mb-5  has-background-warning\tbox" }, [
       _c(
         "div",
         {
@@ -37245,6 +37259,8 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
       _c("div", { staticClass: " has-text-warning" }, [
         _c("textarea", {
           ref: "NoteBody",
@@ -37258,6 +37274,28 @@ var render = function() {
           }
         })
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.noteform,
+              expression: "noteform"
+            }
+          ],
+          staticClass: "image-upload"
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("input", { attrs: { id: "file-input", type: "file" } })
+        ]
+      ),
+      _vm._v(" "),
+      _c("br"),
       _vm._v(" "),
       _c(
         "button",
@@ -37316,7 +37354,16 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "file-input" } }, [
+      _c("i", { staticClass: "fas fa-camera fa-2x" })
+    ])
+  }
+]
 render._withStripped = true
 
 
