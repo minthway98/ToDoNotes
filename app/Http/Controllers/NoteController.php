@@ -27,7 +27,7 @@ class NoteController extends Controller
         $note->label = 'test';
         $note->title = $request->title;
         $note->note = $request->note;
-        $note->image = 'test-image';
+        $note->image = json_encode( ['test'], JSON_PRETTY_PRINT);
         $note->save();
     }
     public function destroy(Note $note)

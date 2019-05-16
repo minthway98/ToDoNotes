@@ -1842,12 +1842,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       noteform: false,
       textrow: 2,
-      notes: []
+      notes: [],
+      note_id: ''
     };
   },
   methods: {
@@ -1878,6 +1896,9 @@ __webpack_require__.r(__webpack_exports__);
           note: this.$refs.NoteBody.value
         }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.noteform = false, this.shownote());
       }
+    },
+    ShowEdit: function ShowEdit(id) {
+      this.note_id = id;
     }
   },
   mounted: function mounted() {
@@ -37233,8 +37254,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "field" }, [
-    _c("div", { staticClass: "  p-3 mb-5  has-background-warning\tbox" }, [
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "  p-3 mb-5  bg-warning\tbox" }, [
       _c(
         "div",
         {
@@ -37246,12 +37267,12 @@ var render = function() {
               expression: "noteform"
             }
           ],
-          staticClass: " has-text-warning"
+          staticClass: " text-warning"
         },
         [
           _c("input", {
             ref: "NoteTitle",
-            staticClass: "input is-warning ",
+            staticClass: "input form-control bg-warning ",
             attrs: { type: "text", placeholder: "Title" }
           }),
           _vm._v(" "),
@@ -37261,10 +37282,10 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
-      _c("div", { staticClass: " has-text-warning" }, [
+      _c("div", { staticClass: " text-warning" }, [
         _c("textarea", {
           ref: "NoteBody",
-          staticClass: "textarea is-warning",
+          staticClass: "textarea  form-control bg-warning",
           attrs: { rows: "1", placeholder: "Take a note" },
           on: {
             click: _vm.createnote,
@@ -37324,34 +37345,67 @@ var render = function() {
     _c("div", { staticClass: "container " }, [
       _c(
         "div",
-        { staticClass: "row columns" },
+        { staticClass: " card-columns" },
         _vm._l(_vm.notes, function(note) {
-          return _c("div", { key: note.id, staticClass: "column is-3" }, [
-            _c(
-              "div",
-              { staticClass: "has-background-warning box box-shadow" },
-              [
-                _c(
-                  "strong",
-                  { staticClass: "title is-5", attrs: { type: "" } },
-                  [_vm._v(_vm._s(note.title))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  {
-                    staticClass: "content is-small",
-                    staticStyle: { "white-space": "pre" }
+          return _c(
+            "div",
+            { key: note.id, staticClass: "card p-3 bg-warning box box-shadow" },
+            [
+              _c(
+                "blockquote",
+                {
+                  staticClass: "blockquote mb-0 card-body ",
+                  attrs: {
+                    "data-toggle": "modal",
+                    "data-target": "#note" + _vm.note_id
                   },
-                  [_vm._v(_vm._s(note.note))]
-                )
-              ]
-            )
-          ])
+                  on: {
+                    mouseover: function($event) {
+                      return _vm.ShowEdit(note.id)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "strong",
+                    { staticClass: "title is-5", attrs: { type: "" } },
+                    [_vm._v(_vm._s(note.title))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    {
+                      staticClass: "h6",
+                      staticStyle: {
+                        "white-space": "pre-wrap",
+                        "word-wrap": "break-word"
+                      }
+                    },
+                    [_vm._v(_vm._s(note.note))]
+                  )
+                ]
+              )
+            ]
+          )
         }),
         0
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "note" + this.note_id,
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalCenterTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [_vm._m(1)]
+    )
   ])
 }
 var staticRenderFns = [
@@ -37362,6 +37416,66 @@ var staticRenderFns = [
     return _c("label", { attrs: { for: "file-input" } }, [
       _c("i", { staticClass: "fas fa-camera fa-2x" })
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal-dialog modal-dialog-centered",
+        attrs: { role: "document" }
+      },
+      [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c(
+              "h5",
+              {
+                staticClass: "modal-title",
+                attrs: { id: "exampleModalCenterTitle" }
+              },
+              [_vm._v("Modal title")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close"
+                }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _vm._v("\n            ...\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "button" } },
+              [_vm._v("Save changes")]
+            )
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true

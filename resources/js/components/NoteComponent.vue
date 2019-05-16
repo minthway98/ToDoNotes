@@ -1,43 +1,60 @@
 <template>
 
-    <div class="field" >
-        
-        <div class="  p-3 mb-5  has-background-warning	box" >
-             <div class=" has-text-warning" v-show="noteform">
-              
-                 <input type="text" ref="NoteTitle" class="input is-warning " placeholder="Title"> <br>
-
-            </div>  
-        <br>
-            <div class=" has-text-warning">
+    <div class="container" >
+        <div class="  p-3 mb-5  bg-warning	box" >
+                <div class=" text-warning" v-show="noteform">
                 
-                <textarea ref="NoteBody" class="textarea is-warning"  rows="1" @click="createnote"  @keydown="ExpandTextArea()" placeholder="Take a note"></textarea>
-                <!-- <input type="text" class="form-control" placeholder="title" > -->
-            </div>
-            <div class="image-upload" v-show="noteform">
-                <label for="file-input">
-                    <i class="fas fa-camera fa-2x"></i>
-                </label>
+                    <input type="text" ref="NoteTitle" class="input form-control bg-warning " placeholder="Title"> <br>
 
-                <input id="file-input" type="file"/>
-            </div>
-<br>
-           <button class="btn btn-warning" v-show="noteform" @click="storenote()">Close</button>
-                 
+                </div>  
+            <br>
+                <div class=" text-warning">
+                    
+                    <textarea ref="NoteBody" class="textarea  form-control bg-warning"  rows="1" @click="createnote"  @keydown="ExpandTextArea()" placeholder="Take a note"></textarea>
+                    <!-- <input type="text" class="form-control" placeholder="title" > -->
+                </div>
+                <div class="image-upload" v-show="noteform">
+                    <label for="file-input">
+                        <i class="fas fa-camera fa-2x"></i>
+                    </label>
+
+                    <input id="file-input" type="file"/>
+                </div>
+            <br>
+            <button class="btn btn-warning" v-show="noteform" @click="storenote()">Close</button>           
         </div> <br>
         <div class="container " >
-           <div class="row columns">
-                <div class="column is-3" 
-                    v-for="note in notes" :key='note.id'>
-                  <div class='has-background-warning box box-shadow'>
-                       <strong class='title is-5' type=''>{{note.title}}</strong>
-                        <p class='content is-small' style="white-space: pre;">{{ note.note }}</p>
-                  </div>
+           <div class=" card-columns">
+               
+                <div class="card p-3 bg-warning box box-shadow" 
+                    v-for="note in notes" :key='note.id'  >
+                <blockquote class="blockquote mb-0 card-body "  data-toggle="modal" :data-target="'#note' + note_id " @mouseover="ShowEdit(note.id)" >
+                       <strong class='title is-5' type=''>{{note.title}}</strong> 
+                        <p class='h6' style="white-space: pre-wrap; word-wrap:break-word ">{{ note.note }}</p>
+                 </blockquote>
                </div>
             </div>
         </div>
-
-
+        <!-- Modal -->
+        <div class="modal fade" :id="'note' + this.note_id " tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+        </div>
      
 
 
@@ -51,6 +68,7 @@ export default {
             noteform: false,
             textrow: 2,
             notes: [],
+            note_id:''
 
         }
     },
@@ -89,7 +107,12 @@ export default {
             }
             
             
-        }
+        },
+       
+        ShowEdit(id){
+            this.note_id = id;
+        },
+     
     },
     mounted() {
         this.shownote();

@@ -22,16 +22,14 @@ textarea {
     cursor: pointer;
 }
 
-.box{
-
-
-  
-  box-shadow:0 2px 3px rgba(black, 0.1), 0 0 0 1px rgba(black, 0.1) ;
+.p-width{
+  max-width: 100px;
 }
-  
-a.box
-  &:hover,
-  &:focus
-    box-shadow: $box-link-hover-shadow
-  &:active
-    box-shadow: $box-link-active-shadow
+.b.card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+}
