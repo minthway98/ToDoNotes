@@ -1859,13 +1859,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      SelectedColor: '#fbbc04',
       noteform: false,
       textrow: 2,
       notes: [],
-      note_id: ''
+      note_id: '',
+      SelectedNotes: [],
+      showcolor: false
     };
   },
   methods: {
@@ -1893,12 +1923,33 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         axios.post('/storenote', {
           title: this.$refs.NoteTitle.value,
-          note: this.$refs.NoteBody.value
-        }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.noteform = false, this.shownote());
+          note: this.$refs.NoteBody.value,
+          color: this.SelectedColor
+        }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.noteform = false, this.showcolor = false, this.shownote());
       }
     },
     ShowEdit: function ShowEdit(id) {
       this.note_id = id;
+    },
+    Editdata: function Editdata(id) {
+      var _this2 = this;
+
+      axios.get('/note/edit/' + id).then(function (response) {
+        _this2.SelectedNotes = response.data;
+      });
+    },
+    updatenote: function updatenote(id) {
+      var _this3 = this;
+
+      axios.post('/note/update/' + id, {
+        title: this.$refs.NoteUpdatetitle.value,
+        note: this.$refs.NoteUpdatenote.value
+      }).then(function (response) {
+        _this3.shownote();
+      });
+    },
+    colortab: function colortab() {
+      this.showcolor = true;
     }
   },
   mounted: function mounted() {
@@ -37255,90 +37306,224 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "  p-3 mb-5  bg-warning\tbox" }, [
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.noteform,
-              expression: "noteform"
+    _c(
+      "div",
+      {
+        staticClass: "  p-3 mb-5 \tbox note",
+        style: "background:" + _vm.SelectedColor
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.noteform,
+                expression: "noteform"
+              }
+            ],
+            staticClass: " text-warning"
+          },
+          [
+            _c("input", {
+              ref: "NoteTitle",
+              staticClass: "input form-control  ",
+              style: "background:" + _vm.SelectedColor,
+              attrs: { type: "text", placeholder: "Title" }
+            }),
+            _vm._v(" "),
+            _c("br")
+          ]
+        ),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: " text-warning" }, [
+          _c("textarea", {
+            ref: "NoteBody",
+            staticClass: "textarea  form-control",
+            style: "background:" + _vm.SelectedColor,
+            attrs: { rows: "1", placeholder: "Take a note" },
+            on: {
+              click: _vm.createnote,
+              keydown: function($event) {
+                return _vm.ExpandTextArea()
+              }
             }
-          ],
-          staticClass: " text-warning"
-        },
-        [
-          _c("input", {
-            ref: "NoteTitle",
-            staticClass: "input form-control bg-warning ",
-            attrs: { type: "text", placeholder: "Title" }
-          }),
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.noteform,
+                expression: "noteform"
+              }
+            ],
+            staticClass: "image-upload"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("input", { attrs: { id: "file-input", type: "file" } })
+          ]
+        ),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-6" }, [
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showcolor,
+                    expression: "showcolor"
+                  }
+                ],
+                staticClass: "animated  fadeInRight"
+              },
+              [
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#f28b82" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#f28b82"
+                    }
+                  }
+                }),
+                _vm._v("  \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#fbbc04" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#fbbc04"
+                    }
+                  }
+                }),
+                _vm._v(" \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#fff475" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#fff475"
+                    }
+                  }
+                }),
+                _vm._v("  \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#ccff90" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#ccff90"
+                    }
+                  }
+                }),
+                _vm._v("  \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#a7ffeb" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#a7ffeb"
+                    }
+                  }
+                }),
+                _vm._v("  \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#cbf0f8" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#cbf0f8"
+                    }
+                  }
+                }),
+                _vm._v("  \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#aecbfa" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#aecbfa"
+                    }
+                  }
+                }),
+                _vm._v("  \n                    "),
+                _c("button", {
+                  staticClass: "selectedcolor",
+                  staticStyle: { background: "#d7aefb" },
+                  on: {
+                    click: function($event) {
+                      _vm.SelectedColor = "#d7aefb"
+                    }
+                  }
+                }),
+                _vm._v("  \n                \n              ")
+              ]
+            )
+          ]),
           _vm._v(" "),
-          _c("br")
-        ]
-      ),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("div", { staticClass: " text-warning" }, [
-        _c("textarea", {
-          ref: "NoteBody",
-          staticClass: "textarea  form-control bg-warning",
-          attrs: { rows: "1", placeholder: "Take a note" },
-          on: {
-            click: _vm.createnote,
-            keydown: function($event) {
-              return _vm.ExpandTextArea()
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.noteform,
-              expression: "noteform"
-            }
-          ],
-          staticClass: "image-upload"
-        },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("input", { attrs: { id: "file-input", type: "file" } })
-        ]
-      ),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.noteform,
-              expression: "noteform"
-            }
-          ],
-          staticClass: "btn btn-warning",
-          on: {
-            click: function($event) {
-              return _vm.storenote()
-            }
-          }
-        },
-        [_vm._v("Close")]
-      )
-    ]),
+          _c("div", { staticClass: "col-6 justify-content-right" }, [
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.noteform,
+                    expression: "noteform"
+                  }
+                ],
+                staticClass: "btn",
+                on: {
+                  click: function($event) {
+                    return _vm.colortab()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-palette" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.noteform,
+                    expression: "noteform"
+                  }
+                ],
+                staticClass: "btn ",
+                style: "background:" + _vm.SelectedColor,
+                on: {
+                  click: function($event) {
+                    return _vm.storenote()
+                  }
+                }
+              },
+              [_vm._v("Close")]
+            )
+          ])
+        ])
+      ]
+    ),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
@@ -37349,7 +37534,11 @@ var render = function() {
         _vm._l(_vm.notes, function(note) {
           return _c(
             "div",
-            { key: note.id, staticClass: "card p-3 bg-warning box box-shadow" },
+            {
+              key: note.id,
+              staticClass: "card p-3 box box-shadow",
+              style: "background:" + note.color
+            },
             [
               _c(
                 "blockquote",
@@ -37362,6 +37551,9 @@ var render = function() {
                   on: {
                     mouseover: function($event) {
                       return _vm.ShowEdit(note.id)
+                    },
+                    click: function($event) {
+                      return _vm.Editdata(note.id)
                     }
                   }
                 },
@@ -37404,7 +37596,59 @@ var render = function() {
           "aria-hidden": "true"
         }
       },
-      [_vm._m(1)]
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("input", {
+                  ref: "NoteUpdatetitle",
+                  staticClass: "input form-control ",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.SelectedNotes.title }
+                }),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _c("textarea", {
+                  ref: "NoteUpdatenote",
+                  staticClass: "textarea  form-control",
+                  attrs: { rows: "5" },
+                  domProps: { value: _vm.SelectedNotes.note },
+                  on: {
+                    keydown: function($event) {
+                      return _vm.ExpandTextArea()
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updatenote(_vm.SelectedNotes.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Close")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
     )
   ])
 }
@@ -37414,68 +37658,27 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "file-input" } }, [
-      _c("i", { staticClass: "fas fa-camera fa-2x" })
+      _c("i", { staticClass: "fas fa-camera" })
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal-dialog modal-dialog-centered",
-        attrs: { role: "document" }
-      },
-      [
-        _c("div", { staticClass: "modal-content" }, [
-          _c("div", { staticClass: "modal-header" }, [
-            _c(
-              "h5",
-              {
-                staticClass: "modal-title",
-                attrs: { id: "exampleModalCenterTitle" }
-              },
-              [_vm._v("Modal title")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "close",
-                attrs: {
-                  type: "button",
-                  "data-dismiss": "modal",
-                  "aria-label": "Close"
-                }
-              },
-              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _vm._v("\n            ...\n        ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-footer" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button", "data-dismiss": "modal" }
-              },
-              [_vm._v("Close")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "button" } },
-              [_vm._v("Save changes")]
-            )
-          ])
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true

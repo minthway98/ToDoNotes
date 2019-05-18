@@ -21,7 +21,13 @@ textarea {
     width: 80px;
     cursor: pointer;
 }
-
+.selectedcolor{
+  border-radius: 20px;
+  padding: 10px 10px;
+}
+.note{
+  border-radius: 10px;
+}
 .p-width{
   max-width: 100px;
 }

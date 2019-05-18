@@ -27,7 +27,19 @@ class NoteController extends Controller
         $note->label = 'test';
         $note->title = $request->title;
         $note->note = $request->note;
+        $note->color= $request->color;
         $note->image = json_encode( ['test'], JSON_PRETTY_PRINT);
+        $note->save();
+    }
+    public function showedit($id){
+
+        $note= Note::findOrFail($id);
+        return $note;
+    }
+    public function update($id, Request $request){
+        $note = Note::findOrFail($id);
+        $note->title = $request->title;
+        $note->note = $request->note;
         $note->save();
     }
     public function destroy(Note $note)

@@ -21,4 +21,5 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/note/show', 'NoteController@shownote');
 Route::post('/storenote', 'NoteController@storenote');
-
+Route::get('/note/edit/{id}', 'NoteController@showedit');
+Route::post('/note/update/{id}', 'NoteController@update');
