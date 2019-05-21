@@ -1886,6 +1886,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1895,7 +1918,8 @@ __webpack_require__.r(__webpack_exports__);
       notes: [],
       note_id: '',
       SelectedNotes: [],
-      showcolor: false
+      showcolor: false,
+      images: []
     };
   },
   methods: {
@@ -1917,14 +1941,15 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     storenote: function storenote() {
-      if (this.$refs.NoteTitle.value == '' & this.$refs.NoteBody.value == '') {
+      if (this.$refs.NoteTitle.value == '' & this.$refs.NoteBody.value == '' & this.images.length == 0) {
         this.noteform = false;
         this.shownote();
       } else {
         axios.post('/storenote', {
           title: this.$refs.NoteTitle.value,
           note: this.$refs.NoteBody.value,
-          color: this.SelectedColor
+          color: this.SelectedColor,
+          image: this.images
         }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.noteform = false, this.showcolor = false, this.shownote());
       }
     },
@@ -1950,6 +1975,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     colortab: function colortab() {
       this.showcolor = true;
+    },
+    onFileChange: function onFileChange(e) {
+      var selectedfile = URL.createObjectURL(this.$refs.InputFile.files[0]);
+      this.images.push(selectedfile);
     }
   },
   mounted: function mounted() {
@@ -37324,6 +37353,29 @@ var render = function() {
                 expression: "noteform"
               }
             ],
+            staticClass: "row"
+          },
+          _vm._l(_vm.images, function(image) {
+            return _c("div", { key: image.id, staticClass: "col-4" }, [
+              image
+                ? _c("img", { staticClass: "img-fluid", attrs: { src: image } })
+                : _vm._e()
+            ])
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.noteform,
+                expression: "noteform"
+              }
+            ],
             staticClass: " text-warning"
           },
           [
@@ -37355,25 +37407,11 @@ var render = function() {
           })
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.noteform,
-                expression: "noteform"
-              }
-            ],
-            staticClass: "image-upload"
-          },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("input", { attrs: { id: "file-input", type: "file" } })
-          ]
-        ),
+        _c("input", {
+          ref: "InputFile",
+          attrs: { type: "file" },
+          on: { change: _vm.onFileChange }
+        }),
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
@@ -37604,48 +37642,58 @@ var render = function() {
             attrs: { role: "document" }
           },
           [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("input", {
-                  ref: "NoteUpdatetitle",
-                  staticClass: "input form-control ",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.SelectedNotes.title }
-                }),
+            _c(
+              "div",
+              {
+                staticClass: "modal-content",
+                style: "background:" + _vm.SelectedNotes.color
+              },
+              [
+                _vm._m(0),
                 _vm._v(" "),
-                _c("br"),
-                _vm._v(" "),
-                _c("textarea", {
-                  ref: "NoteUpdatenote",
-                  staticClass: "textarea  form-control",
-                  attrs: { rows: "5" },
-                  domProps: { value: _vm.SelectedNotes.note },
-                  on: {
-                    keydown: function($event) {
-                      return _vm.ExpandTextArea()
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" },
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("input", {
+                    ref: "NoteUpdatetitle",
+                    staticClass: "input form-control ",
+                    style: "background:" + _vm.SelectedNotes.color,
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.SelectedNotes.title }
+                  }),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    ref: "NoteUpdatenote",
+                    staticClass: "textarea  form-control",
+                    style: "background:" + _vm.SelectedNotes.color,
+                    attrs: { rows: "5" },
+                    domProps: { value: _vm.SelectedNotes.note },
                     on: {
-                      click: function($event) {
-                        return _vm.updatenote(_vm.SelectedNotes.id)
+                      keydown: function($event) {
+                        return _vm.ExpandTextArea()
                       }
                     }
-                  },
-                  [_vm._v("Close")]
-                )
-              ])
-            ])
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", {}, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn ",
+                      style: "background:" + _vm.SelectedNotes.color,
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                      on: {
+                        click: function($event) {
+                          return _vm.updatenote(_vm.SelectedNotes.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Close")]
+                  )
+                ])
+              ]
+            )
           ]
         )
       ]
@@ -37657,15 +37705,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "file-input" } }, [
-      _c("i", { staticClass: "fas fa-camera" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
+    return _c("div", {}, [
       _c(
         "button",
         {

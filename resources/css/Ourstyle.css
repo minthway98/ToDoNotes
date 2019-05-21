@@ -25,6 +25,16 @@ textarea {
   border-radius: 20px;
   padding: 10px 10px;
 }
+#preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#preview img {
+  max-width: 30%;
+  max-height: 30%;
+}
 .note{
   border-radius: 10px;
 }

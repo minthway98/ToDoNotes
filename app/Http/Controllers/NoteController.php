@@ -21,7 +21,7 @@ class NoteController extends Controller
         return $notes;
     }
     public function storenote(Request $request){
-
+        dd($request->image);
         $note = new Note;
         $note->user_id = auth()->id();
         $note->label = 'test';

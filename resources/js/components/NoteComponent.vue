@@ -2,6 +2,13 @@
 
     <div class="container" >
         <div class="  p-3 mb-5 	box note"  :style="'background:' + SelectedColor" >
+                <div class="row"       
+                     v-show="noteform">
+                     <div v-for="image in images" :key="image.id" class="col-4" >
+                        <img :src="image" class="img-fluid"  v-if="image"/>
+                     </div>
+                    
+                </div>
                 <div class=" text-warning" v-show="noteform">
                 
                     <input type="text" ref="NoteTitle" class="input form-control  " :style="'background:' + SelectedColor" placeholder="Title"> <br>
@@ -13,13 +20,15 @@
                     <textarea ref="NoteBody" class="textarea  form-control" :style="'background:' + SelectedColor" rows="1" @click="createnote"  @keydown="ExpandTextArea()" placeholder="Take a note"></textarea>
                     <!-- <input type="text" class="form-control" placeholder="title" > -->
                 </div>
-                <div class="image-upload" v-show="noteform">
+                <!-- <div class="image-upload" v-show="noteform">
                     <label for="file-input">
                         <i class="fas fa-camera"></i>
                     </label>
 
                     <input id="file-input" type="file"/> 
-                </div>
+                </div> -->
+              <input type="file" @change="onFileChange" ref="InputFile" />
+
                
             <br>
             <div class="row">
@@ -59,24 +68,38 @@
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" :id="'note' + this.note_id " tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" 
+            :id="'note' + this.note_id " 
+            tabindex="-1" role="dialog" 
+            aria-labelledby="exampleModalCenterTitle" 
+            aria-hidden="true"
+             >
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-content"  :style="'background:' + SelectedNotes.color">
+            <div class="">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                 <input type="text" ref="NoteUpdatetitle" class="input form-control " :value="SelectedNotes.title"> <br>
+                 <input type="text" 
+                        ref="NoteUpdatetitle" 
+                        class="input form-control " 
+                        :value="SelectedNotes.title"
+                        :style="'background:' + SelectedNotes.color"> <br>
+
                   <textarea ref="NoteUpdatenote"
                             class="textarea  form-control"  
                             rows="5" 
                             @keydown="ExpandTextArea()" 
-                            :value="SelectedNotes.note"></textarea>
+                            :value="SelectedNotes.note"
+                            :style="'background:' + SelectedNotes.color"></textarea>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" @click="updatenote(SelectedNotes.id)" data-dismiss="modal">Close</button>
+            <div class="">
+                <button type="button" class="btn " 
+                        @click="updatenote(SelectedNotes.id)" 
+                        data-dismiss="modal"
+                        :style="'background:' + SelectedNotes.color">Close</button>
 
             </div>
             </div>
@@ -98,7 +121,8 @@ export default {
             notes: [],
             note_id:'',
             SelectedNotes:[],
-            showcolor: false
+            showcolor: false,
+            images:[],
 
         }
     },
@@ -119,9 +143,9 @@ export default {
             })
         },
         storenote(){
-            if( this.$refs.NoteTitle.value== '' &  this.$refs.NoteBody.value == '')
+            if( this.$refs.NoteTitle.value== '' &  this.$refs.NoteBody.value == '' & this.images.length ==0)
             {
-                  this.noteform=false;
+                this.noteform=false;
                 this.shownote();
             }
             else{
@@ -129,6 +153,7 @@ export default {
                     title: this.$refs.NoteTitle.value,
                     note: this.$refs.NoteBody.value,
                     color: this.SelectedColor,
+                    image: this.images,
                 }).then(
                     this.$refs.NoteTitle.value='',
                     this.$refs.NoteBody.value='',
@@ -160,7 +185,11 @@ export default {
         },
         colortab(){
             this.showcolor = true;
-        }
+        },
+         onFileChange(e) {
+               var selectedfile = URL.createObjectURL(this.$refs.InputFile.files[0]);
+                this.images.push(selectedfile);
+            }
 
      
     },
