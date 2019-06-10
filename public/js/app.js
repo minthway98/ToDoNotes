@@ -1909,6 +1909,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1943,14 +1944,15 @@ __webpack_require__.r(__webpack_exports__);
     storenote: function storenote() {
       if (this.$refs.NoteTitle.value == '' & this.$refs.NoteBody.value == '' & this.images.length == 0) {
         this.noteform = false;
-        this.shownote();
+        this.images = [];
+        this.$refs.note_image.value = '', this.showcolor = false, this.shownote();
       } else {
         axios.post('/storenote', {
           title: this.$refs.NoteTitle.value,
           note: this.$refs.NoteBody.value,
           color: this.SelectedColor,
           image: this.images
-        }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.noteform = false, this.showcolor = false, this.shownote());
+        }).then(this.$refs.NoteTitle.value = '', this.$refs.NoteBody.value = '', this.$refs.note_image.value = '', this.noteform = false, this.showcolor = false, this.images = [], this.shownote());
       }
     },
     ShowEdit: function ShowEdit(id) {
@@ -1977,7 +1979,7 @@ __webpack_require__.r(__webpack_exports__);
       this.showcolor = true;
     },
     onFileChange: function onFileChange(e) {
-      var selectedfile = URL.createObjectURL(this.$refs.InputFile.files[0]);
+      var selectedfile = URL.createObjectURL(this.$refs.note_image.files[0]);
       this.images.push(selectedfile);
     }
   },
@@ -37407,11 +37409,28 @@ var render = function() {
           })
         ]),
         _vm._v(" "),
-        _c("input", {
-          ref: "InputFile",
-          attrs: { type: "file" },
-          on: { change: _vm.onFileChange }
-        }),
+        _c("br"),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.noteform,
+                expression: "noteform"
+              }
+            ]
+          },
+          [
+            _c("input", {
+              ref: "note_image",
+              attrs: { type: "file" },
+              on: { change: _vm.onFileChange }
+            })
+          ]
+        ),
         _vm._v(" "),
         _c("br"),
         _vm._v(" "),
@@ -37428,7 +37447,7 @@ var render = function() {
                     expression: "showcolor"
                   }
                 ],
-                staticClass: "animated  fadeInRight"
+                staticClass: "animated fadeInRight"
               },
               [
                 _c("button", {
@@ -37510,7 +37529,7 @@ var render = function() {
                     }
                   }
                 }),
-                _vm._v("  \n                \n              ")
+                _vm._v("                \n                ")
               ]
             )
           ]),
@@ -37528,6 +37547,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "btn",
+                attrs: { title: "Choose Color" },
                 on: {
                   click: function($event) {
                     return _vm.colortab()
@@ -37535,6 +37555,28 @@ var render = function() {
                 }
               },
               [_c("i", { staticClass: "fas fa-palette" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.noteform,
+                    expression: "noteform"
+                  }
+                ],
+                staticClass: "btn",
+                attrs: { title: "Make To Do list" },
+                on: {
+                  click: function($event) {
+                    return _vm.colortab()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "far fa-check-square" })]
             ),
             _vm._v(" "),
             _c(
